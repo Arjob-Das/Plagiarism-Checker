@@ -1,0 +1,1197 @@
+Received June 28, 2019, accepted July 13, 2019, date of publication July 25, 2019, date of current version August 8, 2019.
+ Digital Object Identifier 10.1109/ACCESS.2019.2931055
+ Charging Station Placement for Electric Vehicles:
+ A Case Study of Guwahati City, India
+ SANCHARI DEB
+ KARUNA KALITA
+ 1,(Student Member, IEEE), KARI TAMMI 2,(Member, IEEE),
+ 3,ANDPINAKESWAR MAHANTA3,4
+ 1Centre for Energy, IIT Guwahati, Guwahati 781013, India
+ 2Department of Mechanical Engineering, Aalto University, 02610 Espoo, Finland
+ 3Department of Mechanical Engineering, IIT Guwahati, Guwahati 781013, India
+ 4Department of Mechanical Engineering, National Institute of Technology, Yupia 791110, India
+ Corresponding author: Sanchari Deb (sancharideb@yahoo.co.in)
+ This work was supported by the Business Finland and Henry Ford Foundation Finland.
+ ABSTRACT The ever-increasing population of India accompanied by the recent concerns regarding
+ fossil fuel depletion and environmental pollution has made it indispensable to develop alternate mode of
+ transportation. Electric vehicle (EV) market in India is expanding. For acceptance of EVs among the masses,
+ development of charging infrastructure is of paramount importance. This paper formulates and solves the
+ charging infrastructure-planning problem for Guwahati, India, that will develop as a smart city soon. The
+ allocation of charging station problem was framed in a multi-objective framework considering the economic
+ factors, power grid characteristics, such as voltage stability, reliability, power loss, as well as EV users
+ convenience, and random road traf c. The placement problem was solved by using a Pareto dominance
+based hybrid algorithm amalgamating chicken swarm optimization (CSO) and the teaching learning
+based optimization (TLBO) algorithm. Finally, the Pareto optimal solutions were compared by fuzzy
+ decision-making.
+ INDEX TERMS City, cost, charging station, electric vehicle, optimization, traf c.
+ NOMENCLATURE
+ Constant Parameters
+ PR
+ Congestion probability of residential area
+ PO
+ Cfast
+ Cslow
+ CPfast
+ Congestion probability of of ce area
+ Installation cost of fast charging stations
+ Installation cost of slow charging stations
+ Power consumption of fast charging stations
+ CPslow Power consumption of slow charging stations
+ Pelec
+ m
+ q
+ w1
+ w2
+ w21
+ w22
+ w23
+ w3
+ Per unit cost of electricity
+ Maximumnumberoflocationsinwhichcharg
+ing station will be placed
+ Total number of charging demand points
+ Weight assigned to V
+ Weight assigned to R
+ Weight assigned to SAIFI
+ Weight assigned to SAIDI
+ Weight assigned to CAIDI
+ Weight assigned to Power loss
+ The associate editor coordinating the review of this manuscript and
+ approving it for publication was Vigna K. Ramachandaramurthy.
+ 100270
+ VSIbase
+ SAIFIbase
+ SAIDIbase
+ Base value of Voltage Stability Index
+ Base value of SAIFI
+ Base value of SAIDI
+ CAIDIbase Base value of CAIDI
+ Pbase
+ loss
+ ND
+ Base value of power loss
+ Total number of buses of the distribution
+ network
+ Fmax, fmax Maximum number of fast charging stations
+ and charging points
+ Smax, smax Maximumnumberofslowchargingstations
+ and charging points
+ Qmin
+ i
+ Qmax
+ i
+ Pmin
+ i
+ Pmax
+ i
+ f , s
+ f , s
+ f
+ P
+ 0
+ , Ps
+ 0
+ Lower limit of reactive power of bus i
+ Upper limit of reactive power of bus i
+ Lower limit of active power of bus i
+ Upper limit of active power of bus i
+ Arrival rate of EVs in fast and slow charging
+ stations
+ Utilization rate of fast and slow charging
+ stations
+ Probability of no EVs waiting in fast & slow
+ charging stations
+ This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see http://creativecommons.org/licenses/by/4.0/
+ VOLUME 7, 2019
+S.Debetal.:ChargingStationPlacementforEVs:ACaseStudyofGuwahatiCity, India
+ Variables
+ Cinstallation Net installationcostassociatedwithplace
+mentofchargingstations
+ Coperation Net operationcost associatedwithplace
+mentofchargingstations
+ VSIi
+ base BasevalueofVSIoftheithbus
+ VSIi
+ l VSIoftheithbusaftertheplacementofthe
+ chargingstations
+ VSIl VSIafteraftertheplacementofEVcharging
+ stations
+ Pl
+ loss PowerlossaftertheplacementofEVcharg
+ingstations
+ SAIFIl SAIFI after the placement of charging
+ stationsinthedistributionnetwork
+ SAIDIl SAIDI after the placement of charging
+ stationsinthedistributionnetwork
+ CAIDIl CAIDI after the placement of charging
+ stationsinthedistributionnetwork
+ Vi Voltageofithbusforbasecase
+ Vi 1 Voltageof(i 1)thbusforbasecase
+ Vi Voltage of ith bus after the placement of
+ chargingstation
+ Vi 1 Voltageof(i 1)thbusaftertheplacement
+ ofchargingstation
+ Pi Activepowerattheithbus
+ Pi 1 Activepowerat(i 1)thbus
+ Pi Activepowerat ithbusafter theplacement
+ ofchargingstations
+ Pi 1 Activepowerat(i 1)thbusaftertheplace
+mentofchargingstations
+ Qi Reactivepowerattheithbus
+ Qi 1 Reactivepowerat(i 1)thbus
+ Qi Reactivepoweratithbusaftertheplacement
+ ofchargingstations
+ Qi 1 Reactivepower at (i 1)th bus after the
+ placementofchargingstations
+ Pp Activepoweratbusp
+ Pp Activepoweratbuspaftertheplacementof
+ chargingstation
+ ri Resistanceofthebranchbetweenbusiand
+ i 1
+ xi Reactanceof thebranchbetweenbusiand
+ i 1
+ Z Impedanceofthebranchbetweenbusiand
+ i 1
+ i Failurerateofithbus
+ Ni Numberofconsumersconnectedatithbus
+ Ui Outagedurationofithbus
+ i Failurerateofithbusaftertheplacementof
+ chargingstation
+ NDS NonDominatedSolution
+ Ui Outagedurationof ith busafter theplace
+mentofthechargingstation
+ p Failurerateofbusp
+ p Failurerateofbuspaftertheplacementofcharg
+ingstation
+ Up Outagedurationofbusp
+ Up Outagedurationofbuspafter theplacementof
+ chargingstation
+ Ii Currentthroughbranchi
+ Ii Current throughbranchiafter theplacementof
+ chargingstation
+ dicj Distancebetweenithchargingdemandpointand
+ jthchargingstationwherei 12 qandj 12 m
+ Pgi Activepowergenerationofithbus
+ Pdi Activepowerdemandofithbus
+ Qgi Reactivepowergenerationofithbus
+ Qdi Reactivepowerdemandofithbus
+ Vj Voltageofjthbus
+ Yij Magnitude of (i, j)th termof bus admittance
+ matrix
+ ij AngleofYij
+ i Voltageangleofithbus
+ j Voltageangleofjthbus
+ I. INTRODUCTION
+ EVshaveemergedasatransportationmodefreefromlocal
+ emissions. IndiabeingasignatoryoftheParisagreement is
+ planningtobeanEVnationby2030[1].However,absenceof
+ easilyaccessiblechargingstationsisoneoftheencumbrances
+ affecting theEVmarket in India. Therefore, the govern
+mentofIndiahasrecentlystartedtakingmanyinitiativesfor
+ development of sustainableandeasilyaccessiblecharging
+ stations [1]. Inappropriatepositioningof chargingstations
+ mayaffectsmoothoperationofthepowergridcausingvolt
+age instability, increasedpower loss, harmonicsandlower
+ reliability indices [2], [3].Additionally, charging stations
+ shouldbeeasilyaccessibletoEVdriverspreferablycausing
+ noextracongestion.Thecomplexandhaphazardnatureof
+ thepowergridandroadnetworkofIndiamakesthecharging
+ infrastructure-planningproblema tedious andchallenging
+ task.Motivatedby the recent concerns related toenviron
+mentalpollutionandenergycrisis,wemakeanattempt to
+ formulateandsolvethechargingstationallocationproblem
+ inthecontextofGuwahaticity,India.Guwahatiisoneofthe
+ upcomingsmartcities[1].Hence,itisexpectedthatinfuture,
+ a largenumberofEVswillplyontheroadsofGuwahati
+ resultinginnecessityofchargingstations.
+ Chargingstationplacementproblemconcernsresearchers
+ acrosstheworld.Debetal. [1]reviewedvariousaspectsof
+ charginginfrastructureplanninglikeglobalscenario,model
+ingapproaches,objectivefunctions,andconstraints.
+ The charging station placement problemis formulated
+ consideringonlytransportnetworkin[4] [6].Liuetal. [4]
+ consideredconstructioncostandrunningcostastheobjec
+tivefunctionsalongwiththechargingneedasaconstraint
+ intheirformulation.TheyappliedAdaptiveParticleSwarm
+ optimization (APSO) for solving the complex problem.
+ VOLUME7,2019 100271
+S. Deb et al.: Charging Station Placement for Electric Vehicles: A Case Study of Guwahati City, India
+ The aforesaid approach was tested on a road network of
+ Beijing. Bendiabdellah et al. [5] formulated the charging
+ station allotment problem for the city of Cologne inGermany.
+ They considered installation cost and cost of commuting
+ the distance between charging demand point and charging
+ stations as objective functions. The allocation problem was
+ solved by a hybrid method amalgamating k means of cluster
+ing and Genetic Algorithm (GA). Tu et al. [6] formulated the
+ charging infrastructure planning problem for a road network
+ of Shenzhen city in China. They considered maximization
+ of travel time of EVs and minimization of waiting time in
+ the charging stations as the objective functions. The range of
+ EV, capacity of charging stations, time required for charging
+ were considered as constraints in the planning model. The
+ allocation problem was solved by applying GA.
+ References [7] [9] have formulated the charging station
+ placement problem by considering only distribution network.
+ Liu et al. [7] have presented an approach for placing the
+ charging stations considering cost as the objective function
+ for IEEE 123 bus test network. Modi ed Primal Dual Inte
+rior Point Algorithm (MPDIPA) was utilized for solving
+ the placement problem. Zheng et al. [8] presented a unique
+ scheme for charging and battery swapping station placement
+ considering cost as the objective function and power con
+sumption limit, voltage limit, current limit as constraints.
+ A modi ed version of Differential Evolution (DE) was uti
+lized for solving the placement problem. The authors tested
+ the proposed approach on IEEE 15 and IEEE 43 bus distri
+bution network. Simorgh et al. [9] considered the cost and
+ demand response as the objective functions and solved the
+ placement problem by applying PSO. Further, they showed
+ that demand response program can reduce grid losses and the
+ total cost.
+ On the contrary, references [10] [12] modeled the place
+ment problem in a multi-disciplinary approach by giving
+ consideration to both transport and distribution network.
+ Wang et al. [10] used a multi-objective EV charging station
+ planning model ensuring charging service and simultane
+ously considering power loss and voltage deviation of the
+ distribution network. The placement problem was solved by
+ using Data Envelopment Analysis (DEA) as well as by a
+ Cross-Entropy based method (CE). The authors validated the
+ proposedapproachonsuperimposedIEEE33busdistribution
+ network and 25 node road network. Rajabi-Ghahnavieh and
+ Sadeghi-Barzani [11] modeled the charging station place
+ment problem for northwest Tehran, Iran. They considered
+ zonal traf c circulation in the formulation of charging sta
+tion placement along with station development cost and grid
+ operator cost. Subsequently, the problem was solved by using
+ GA. Deb et al. [12] modeled the charging station allotment
+ problem with cost as the objective function where the charac
+teristics of the distribution network such as voltage deviation,
+ reliability and power losses were also taken into account in
+ the planning model by enforcing penalty for infringing the
+ safe limits of these factors. Further, a novel CSO TLBO
+ algorithm was applied for obtaining the apposite sites of the
+ 100272
+ charging stations. The proposed approach was validated on
+ superimposed IEEE 33 bus distribution network and 25 node
+ road network.
+ References [4] [12] highlight the contributions of contem
+porary researches in the arena of charging station placement.
+ However, the existing studies on charging station planning
+ fail to take into account some of the key factors such as
+ resiliency of distribution network, waiting time in the charg
+ing stations, and traf c intensity. Moreover, only few studies
+ formulate the placement problem in the context of an Indian
+ city. Compared with the existing research works related to
+ charging infrastructure planning, the main contributions of
+ the present work are:
+ 1. The present work models the charging station place
+mentprobleminthecontext ofGuwahati, India. Guwa
+hati is one of the upcoming smart cities of India.
+ In future, a large number ofEVswillplyontheroadsof
+ Guwahati. Hence, there will be necessity of sustainable
+ charging infrastructure.
+ 2. High traf c density along with low grid stiffness make
+ it a challenging problem to nd charger locations Our
+ work presents the approach, tools, and performance
+ indicators to nd optimal charger locations taking into
+ account both the traf c and electric grid.
+ 3. The work proposes a two stage-planning model for the
+ charging station allotment. In the rst stage, the candi
+date locations for placingthechargingstationsareiden
+ti ed by a novel methodology of Bayesian network.
+ In the second stage, optimization is performed to select
+ the best locations, type of charging stations and number
+ of charging points at the charging stations.
+ II. CHARGING STATION PLACEMENT PROBLEM
+ Solving the charging station placement problem requires the
+ positioning of the charging stations in the road network
+ considering economic factors, operating parameters of the
+ power grid, and EV users ease. The present work utilizes a
+ two-stage modeling of the charging station placement prob
+lem as illustrated in the subsequent sub-sections. It is
+ expected that the two-stage planning model will reduce
+ the computational time and effectively locate the charging
+ stations.
+ A. SCREENING OF THE CANDIDATE LOCATIONS FOR
+ CHARGING STATION PLACEMENT
+ In the rst stage, the potential locations for the placement
+ of charging stations is determined by using a probabilistic
+ approach based on Bayesian network [13] [17]. It seems to
+ be a common practice to situate the charging stations at the
+ meeting points of distribution and road network [10], [12].
+ Thus, we can say that the superimposed nodes or the nodes
+ of the road network adjacent to the buses of the distribution
+ network arethe candidate sites for the assignment of charging
+ stations. However, some of these nodes can be crammed with
+ high traf c intensity. Also, the chance of some of these nodes
+ beingvulnerablepointsofthegridintermsofvoltagestability
+ cannot be disregarded. In the present work, distance of the
+ VOLUME 7, 2019
+S. Deb et al.: Charging Station Placement for EVs: A Case Study of Guwahati City, India
+ road network nodes from the nearest bus of the distribution
+ network, traf c intensity and grid stability are considered
+ as key factors for nding the candidate sites for placing the
+ charging stations. The potential of Bayesian network to deal
+ with uncertainty and interaction among different events is
+ used in the present work TheBayesian networkutilized in the
+ present work to ndthecandidate locations for the placement
+ of charging stations is as shown in Fig.1.
+ FIGURE 1. Bayesian Network for finding candidate sites for charging
+ station placement.
+ The Bayesian network has three parent nodes [13] named
+ Congestion, Voltage Sensitivity Factor (VSF) and Dis
+tance. As shown in Fig.1 Candidate is the child node [13]
+ of Congestion, Voltage Sensitivity Factor (VSF) and Dis
+tance. The states of Congestion are {Low, High}, states
+ of VSF are {Low, Medium, High}, states of Distance are
+ {Low, Medium, High} and the states of the child node Can
+didate are {Yes, No}. The probability that a particular node
+ is a candidate location is computed by bucket elimination
+ algorithm [14] [17] as given by Eq. (1).
+ P(candidate 
+yes)
+ P(candidateVSF congestion distance)
+ P(VSF) P(congestion) P(distance)
+ (1)
+ The distance of the node of the road network from the nearest
+ bus of the distribution network is calculated graphically. The
+ computational procedures for nding VSF, congestion prob
+ability are elaborated as follows:
+ 1. VSF- The present work uses VSF for analyzing the
+ stability of the distribution network. VSF is de ned as the
+ ratio of variation in voltage and variation in load [18].
+ VSF 
+dV
+ dP
+ P <Pmax
+ (2)
+ The forward and backward sweep algorithm [19] is
+ used for determining the voltage of the buses of the
+ distribution network. The maximum value of load for which
+ the load ow converges is called realistic loading margin of
+ the system. The computation of realistic loading margin is
+ necessary to ascertain how vulnerable the system is to change
+ of load. The owchart illustrating the procedure to compute
+ VSF and realistic loading margin is shown in Fig.2.
+ 2. Congestion Probability- A probabilistic approach based
+ on Bayesian network is utilized in the present work for
+ nding the probability of congestion of the nodes of the
+ road network. The Bayesian network model used for nding
+ congestion probability is shown in Fig.3. The probability of
+ FIGURE 2. Flowchart for computation of VSF [2].
+ FIGURE 3. Bayesian Network for computation of congestion probability.
+ a road network being congested depends on the traf c ow
+ that in turn depends on day of the week, time of the day, and
+ area covered bythe road. Thus, Day, Time, and Area,are
+ the parent nodes [13] of the Bayesian network. And, Traf c
+ Flow is the child node [13] of the nodes Day, Time, and
+ Area. Similarly, Congestion is the child node of Traf c
+ Flow. The probability of congestion being high or low is
+ computed by bucket elimination algorithm [13] [17]. The
+ states of the root nodes Day, Time, and Area are
+ {Weekday, Weekend},{AM Peak, Work, PM Peak, Leisure,
+ Rest}, {Residential(R), Of ce (O), Market (M), School (Sc)}
+ respectively. The states of the child node Traf c ow are
+ {Low (L), Medium (M), High (H)}. The states of the node
+ 100273
+ VOLUME 7, 2019
+S.Debetal.:ChargingStationPlacementforElectricVehicles:ACaseStudyofGuwahatiCity, India
+ Congestion are{Low(L),High(H)}.Thecongestionprob
+abilitiesofresidentialandOf ceareasare:
+ PR P(Area R)P(congestion H) (3)
+ PO P(Area O)P(congestion H) (4)
+ Thecongestionprobabilitiesofotherareascanbefoundby
+ replacingthenumeratorofEq. (3)andEq. (4)accordingly
+ basedonarea.
+ B. OPTIMIZATION
+ Thesecondstageof theproposedplanningmodel involves
+ nding thebest oroptimal locations for theplacement of
+ chargingstations(p)fromthesetofcandidatelocations(pc),
+ numberoffast/slowchargingstations(Fp,SP)andthenum
+ber of fast/ slowchargingpoints or servers(fp, sp). Thus,
+ thedecisionvariablesoftheoptimizationproblemare
+p p1 p2 pm
+ Fp F1 F2 Fm
+ Sp S1 S2 Sm
+ fp f1 f2 fm
+ sp s1 s2 sm
+ wherem is themaximumnumber of locations for the
+ placementofchargingstations.
+ Theplacementproblemisformulatedasamulti-objective
+ optimizationproblemwith cost,VRP index, accessibility
+ indexandwaitingtimeinthechargingstationsasobjective
+ functions.Anoverviewof themulti-objective formulation
+ withobjectivefunctionsandconstraintsispresentedinthis
+ section.
+ Theobjectivefunctionsandconstraintsof theplacement
+ problemareelaboratedasfollows:
+ 1.Cost-Theoptimizationconcernsthecurtailmentof the
+ installationandoperationcost
+ Cost Cinstallation Coperation (5)
+ Cinstallation (
+ m
+ i 1
+ Fi fi) Cfast
+ (
+ m
+ i 1
+ Si si) Cslow (6)
+ Coperation (
+ m
+ i 1
+ Fi fi) CPfast
+ (
+ m
+ i 1
+ Si si) CPslow Pelec (7)
+ FromEq. (6) it canbe inferred that the installationcost
+ depends on the cost of installing fast and slowchargers,
+ numberoffastandslowchargingstations,aswellasnumber
+ of fast and slowchargingpoints. Similarly, fromEq. (7)
+ it canbe inferred that theoperationcost depends on the
+ powerconsumptionoffastandslowchargers,perunitcostof
+ electricity,numberoffastandslowchargingstations,aswell
+ asnumberoffastandslowchargingpoints.Theinstallation
+ andoperationcost isafunctionofnumberoffastandslow
+ chargingstationsaswellasnumberoffastandslowcharging
+ points.
+ 2.VRPindex-Thesecondobjectivefunctionisthemini
+mizationofVRPindex[1].VRPindexisacompositeindex
+ formulatedbyDebetal.[1]thattakesintoaccountdistribu
+tionnetworkoperatingparameterssuchasvoltagestability,
+ reliability,andpowerlosstogetherunderasingleframe.One
+ moresalient featureof theVRPindexis that it takes into
+ accountbothfrequencyanddurationbasedreliabilityindices.
+ Thesuitablevalue, suchasminimumormaximumof the
+ VRPindexcannotbegeneralizedandisdependentonthe
+ testnetwork.AlowvalueofVRPindexisdesirable.Ideally,
+ theminimumvalueofVRP index is 1when there is no
+ increaseintheload.VRPindexismathematicallyexpressed
+ asinEq.(8)
+ VRP f(pFp Sp fp sp) w1V w2R w3P
+ (8)
+ where V VSIl
+ VSIbase
+ P Pl
+ loss
+ Pbase
+ loss
+ R w21
+ SAIFIl
+ SAIFIbase
+ w22
+ SAIDIl
+ SAIDIbase
+ w23
+ CAIDIl
+ CAIDIbase
+ VSIbase
+ ND
+ i 1
+ 2V2
+ i V2
+ i 1 2V2
+ i 1(Pi 1ri Qi 1xi)
+ z2(P2
+ i 1 Q2
+ i 1) (9)
+ Pp Pp (Fp fp) CPfast
+ (Sp sp) CPslow (10)
+ VSIl
+ ND
+ i 1
+ 2V2
+ i V2
+ i 1 2V2
+ i 1(Pi 1ri Qi 1xi)
+ z2(P2
+ i 1 Q2
+ i 1) (11)
+ SAIFIbase
+ ND
+ i 1
+ iNi
+ ND
+ i 1
+ Ni
+ SAIDIbase
+ ND
+ i 1
+ UiNi
+ ND
+ i 1
+ Ni
+ and CAIDIbase
+ ND
+ i 1
+ UiNi
+ ND
+ i 1
+ iNi
+ (12)
+ SAIFIl
+ ND
+ i 1 iNi
+ ND
+ i 1
+ Ni
+ SAIDIl
+ ND
+ i 1
+ UiNi
+ ND
+ i 1
+ Ni
+ and CAIDIl
+ ND
+ i 1
+ UiNi
+ ND
+ i 1 iNi
+ (13)
+ 100274 VOLUME7,2019
+S.Debetal.:ChargingStationPlacementforEVs:ACaseStudyofGuwahatiCity, India
+ p
+ p
+ Pp
+ Pp Up
+ Up
+ Pp
+ Pp (14)
+ Pbase
+ loss
+ ND
+ i 1
+ I2
+ i ri Pl
+ loss
+ ND
+ i 1
+ I 2
+ i ri (15)
+ FromEq.(8)itisseenthatVRPindexisafunctionofthe
+ positionwherechargingstationsareplaced,typeofcharging
+ stations, numberof chargingstationsandchargingpoints.
+ Eq. (9) andEq. (11)mathematicallydescribes thevoltage
+ stability indexbeforeandafter theplacement of charging
+ stations.Eq. (10)isusedforcomputingtheincreaseinload
+ duetoEVchargingstations.Eq. (12)andEq. (13) isused
+ tocompute the reliability indices suchasSAIFI, SAIDI,
+ andCAIDIbeforeandafter theplacementofchargingsta
+tions.FromEq. (12) andEq. (13) it is seen thatSAIFI is
+ a frequencybased reliability indexand it dependson the
+ frequencyof interruption.On theother hand, SAIDI is a
+ durationbasedreliabilityindexanditdependsontheduration
+ of interruption.Thefrequencyanddurationof interruption
+ after the placement of charging stations is calculatedby
+ unitarymethodasshowninEq. (14).Eq. (15)explainsthe
+ computationofpowerlossbeforeandaftertheplacementof
+ chargingstations.
+ 3.Accessibility index-TheAccessibilityof thecharging
+ stations ischosenas thethirdobjectivefunction.Forcom
+putationof accessibility (A) the distancematrix (D) and
+ reduceddistancematrix(DD) rstneedtobecomputed.The
+ distancematrix,Dgives thedistancebetweenthecharging
+ pointdemandandchargingstations.And, reduceddistance
+ matrix,DDidenti esthenearestchargingstationsforeach
+ ofthechargingpointdemandandgivesthedistancebetween
+ thechargingpointdemandanditsnearestchargingstation.
+ D,DD,dandAaretcomputedasfollows:
+ D
+ d1c1 d1c2 d1cm
+ d2c1 d2c2 d2cm
+ dqc1 dqc2 dqcm
+ DD
+ min(d1c1 d1c2 d1cm)
+ min(d2c1 d2c2 d2cm)
+ min(dqc1 dqc2 dqcm)
+ d
+ q
+ i 1
+ DDi
+ A 1
+ d (16)
+ 4.Waitingtime
+ Thewaitingtime(Wt)inthechargingstationscauseincon
+veniencetotheEVdrivers.Hence, theoptimizationaimsto
+ minimizethewaitingtime. Inthepresentwork, thewaiting
+ timeinthechargingstationsismodeledbyM/M/cqueuing
+ theory [20] [22].Thewaiting times in the fast and slow
+ chargingstationsare:
+ Wf
+ m
+ i 1
+ f i 1
+ f
+ (fi 1) (fi f)2
+ Pf
+ 0
+ f
+ (17)
+ Ws
+ m
+ i 1
+ si 1
+ s
+ (si 1) (si s)2
+ Ps
+ 0
+ s
+ (18)
+ FromEq. (17) andEq. (18) it can be inferred that the
+ waiting time in the charging stations depends on the
+ number of charging points or servers in the charging
+ stations.
+ 5.Constraints
+ Thedifferentconstraintsofthechargingstationplacement
+ problemareasfollows:
+ 0<Fp Fmax and0<fp fmax (19)
+ 0<Sp Smax and0<sp smax (20)
+ Qmin
+ i Qi Qmax
+ i (21)
+ Pmin
+ i Pi Pmax
+ i (22)
+ Pgi Pdi Vi
+ ND
+ j 1
+ VjYijcos( i j ij) 0 (23)
+ Qgi Qdi Vi
+ ND
+ j 1
+ VjYijcos( i j ij) 0 (24)
+ Eq.(19)andEq.(20)takesintoaccountthemaximumand
+ minimumnumberof fastaswellasslowchargingstations
+ andchargingpointsthatcanbeplaced.Eq.(21)andEq.(22)
+ takes intoaccount theupperandlower limitsofactiveand
+ reactivepowerrespectively.Eq. (23)andEq. (24)considers
+ thepowerbalanceequation.
+ III.OPTIMIZATIONALGORITHMS
+ Amulti-objectivehybridCSO-TLBOalgorithmpresented
+ in [23]was harnessed to solve theoptimisationproblem.
+ CSOisaswarmintelligenceinspiredalgorithmthatmimics
+ thebehaviourofchickenswarm.TLBOisaNatureInspired
+ Optimization (NIO) algorithm that mimics the teaching
+ and learning process. The implementation of CSO and
+ TLBOforsolvingtheoptimizationproblemisexplainedby
+ Algorithm1 andAlgorithm2 respectively. The grading
+ mechanismofCSOisamalgamatedwithTLBOtoimprove
+ theutilizationrateofpopulationandconvergencespeedof
+ thealgorithm.ItisexpectedthatamalgamationofCSOwith
+ TLBOreduces the chances for premature convergenceof
+ CSOincomputationallyexpensiveproblems.Beinghybrid
+ algorithm, TLBO is activated for all the generation and
+ CSO is invoked periodically depending on the value of
+ an algorithm-speci c control parameter named INV. The
+ owchart for implementingmulti-objectiveCSOTLBOis
+ shown inFig. 4. The computationof rankandcrowding
+ distancecanbefoundin[23].
+ VOLUME7,2019 100275
+S. Deb et al.: Charging Station Placement for Electric Vehicles: A Case Study of Guwahati City, India
+ Algorithm 1 Pseudo Code of Multi-Objective CSO [23]
+ Initialize the population of chicken having size PN and
+ de ne other algorithm speci c parameters such as G, size
+ of rooster, hen, chicken and mother hen;
+ Evaluate the rank of PN chicken, t 
+t 
+0, establish the
+ hierarchal order in the swarm based on rank and form
+ mother child relationship;
+ While (t < gen)
+ t 
+1;
+ If (t%G 
+0)
+ Establish the hierarchal order in the swarm as well as
+ mother child relationship;
+ Else
+ For i 1:PN
+ If i 
+rooster
+ Update its solution by:
+ xt 1
+ i j 
+xt
+ i j 
+(1 randn(0 2));
+ %where randn (0, 2) is a Gaussian distribution function
+ with mean 0 and standard deviation 2
+ End if
+ If i 
+hen
+ Update its solution by:
+ xt 1
+ xt
+ i j 
+i j 
+xt
+ i j)
+ %where S1 exp( fi fr1
+ S1 rand (xt
+ r1j xt
+ i j) S2 rand (xt
+ r2j
+ abs(fi)
+ ) S2 exp(fr2 fi)
+ rand is a randomly generated number between 0 and
+ 1. r1 
+[1N] is an index of the rooster which is ith
+ hens group mate. And r2 
+[1N] is an index of the
+ rooster or hen which is randomly chosen such that r1 is not
+ equal to r2, f denotes tness function, is a small number
+ End if
+ If i 
+chick
+ Update its solution by xt 1
+ i j 
+xt
+ i j 
+FL (xt
+ mj xt
+ i j);
+ % where xt
+ mj represents the position of the ith chicks
+ mother. FL is a parameter signifying that the chick would
+ follow its mother. FLisgenerallychoseninbetween0and2
+ End if
+ Compute the rank of all the individual of the population
+ If rank(t)< rank(t 1)
+ Update the solution
+ If rank(t) 
+rank(t 
+1)
+ Compute crowding distance of all the individual of the
+ population
+ If crowding distance(t) > crowding distance(t 1)
+ Update the solution
+ Else
+ Retain the existing solution
+ End if else
+ Else
+ Retain the existing solution
+ End if else
+ End for
+ End if else
+ End while
+ 100276
+ Algorithm 2 Pseudo Code of Multi-Objective TLBO [23]
+ Set k 1;
+ Initialize the population size(PN) and generate the initial
+ population of students randomly;
+ Compute the rank for all the individuals of the population;
+ while(k < gen)
+ {Teacher Phase}
+ Assign the teacher (Tk) based on the rank;
+ for i 
+1:PN
+ Update each learner by: Znew Zold rand (Tk Rtmk)
+ %where rand is a random number, Rt is random number
+ between0and2,mk ismeanofthedecisionvariablevector
+ Compute the rank of all the individual of the population;
+ If rank(t) < rank(t 1)
+ Update the solution;
+ If rank(t) 
+rank(t 
+1)
+ Compute crowding distance of all the individual of the
+ population
+ If crowding distance(t) > crowding distance(t 1)
+ Update the solution
+ Else
+ Retain the existing solution
+ End if else
+ Else
+ Retain the existing solution
+ End if else
+ {End of teacher phase}
+ {Learner Phase}
+ Choose two learners Zi and Zj, i j;
+ if( tness of Zi better than Zj)
+ Replace ith learner by Znew Zold rand (Zi Zj); %
+ rand is a random number
+ Else
+ Replace ith learner by Znew Zold rand (Zj Zi);
+ End if else
+ End for
+ Compute the rank of all the individual of the population
+ If rank(t) < rank (t 1)
+ Update the solution
+ If rank(t) 
+rank (t 1)
+ Compute crowding distance of all the individual of the
+ population
+ If crowding distance(t) > crowding distance (t 1)
+ Update the solution
+ Else
+ Retain the existing solution
+ End if else
+ Else
+ Retain the existing solution
+ End if else
+ k 
+k 1
+ End while
+ VOLUME 7, 2019
+S.Debetal.:ChargingStationPlacementforEVs:ACaseStudyofGuwahatiCity, India
+ FIGURE4. FlowchartofCSOTLBO.
+ IV. SOLUTIONPROCEDURE
+ Theprocedureforsolutionofthechargingstationplacement
+ problemisasfollows-Step1:Initialization
+ Step1.1: Inputdata. Input theroadnetwork,distribution
+ networkdata,upperandlowerlimitsofdifferentconstraints
+ andset thedifferentalgorithmspeci cparametersofCSO
+ TLBO
+ Step1.2:Generatefeasibleinitialpopulationrandomly.
+ Theinitialfeasiblepopulationisoftheform
+ popintl [ApopBpopCpopDpopEpop]
+ whereApop
+ p11 p12 p13 p1m
+ p21 p22 p23 p2m
+ p31 p32 p33 p3m
+ pPN1
+ pPN2
+ pPN3
+ pPNm
+ Bpop
+ Fp11
+ Fp12
+ Fp13
+ Fp1m Fp21
+ Fp22
+ Fp23
+ Fp2m Fp31
+ Fp32
+ Fp33
+ Fp3m
+ FpPN1
+ FpPN2
+ FpPN3
+ FpPNm
+ Cpop
+ Sp11
+ Sp12
+ Sp13
+ Sp1m Sp21
+ Sp22
+ Sp23
+ Sp2m Sp31
+ Sp32
+ Sp33
+ Sp3m
+ SpPN1
+ SpPN2
+ SpPN3
+ SpPNm
+ Dpop
+ fp11
+ fp12
+ fp13
+ fp1m fp21
+ fp22
+ fp23
+ fp2m fp31
+ fp32
+ fp33
+ fp3m
+ fpPN1
+ fpPN2
+ fpPN3
+ fpPNm
+ Epop
+ sp11
+ sp12
+ sp13
+ sp1m sp21
+ sp22
+ sp23
+ sp2m sp31
+ sp32
+ sp33
+ sp3m
+ spPN1
+ spPN2
+ spPN3
+ spPNm
+ Arandomlygeneratedinitialsolutionisfeasibleifitsatisfy
+ all the constraints of charging stationplacement problem
+ explainedinsectionII(B)
+ Step1.3:Evaluatethefourobjectivefunctionscost,VRP
+ index, accessibilityandwaiting time for the initial popu
+lation.The rankandcrowdingdistancewerecomputedas
+ in[23].The rstParetofrontwithrankoneisdesignatedasTk
+ Step2:RunTLBO
+ Step2.1:RunTLBOandupdatethesolutionbasedonrank
+ andcrowdingdistance[23]
+ Step2.2:IftheelementsBpopexceedFmax,iftheelements
+ ofCpop exceedSmax then thoseelements aremadeequal
+ toFmax andSmax respectively.Similarly, if theelementsof
+ Dpopexceedfmax,ifelementsofEpopexceedsmax thenthose
+ elementsaremadeequaltofmaxandsmax respectively.
+ Step2.3:Else, check feasibilityof the solution. If the
+ solutionis infeasiblerepeat step2.1and2.2until feasible
+ solutionisobtained.
+ Step3:Checkwhethertheiterationcount,t isdivisibleby
+ INV.Ifyesgotostep3.1.Else,gotostep3.5.
+ Step3.1:Ift isdivisiblebyINVrunCSO
+ Step3.2:RunCSOandupdatethesolutionbasedonrank
+ingandcrowdingdistance
+ Step3.3:Repeatstep2.2.
+ Step3.4:Else, check feasibilityof the solution. If the
+ solutionis infeasiblerepeat step3.2and3.3until feasible
+ solutionisobtained.
+ Step3.5:Updatetheiterationcount
+ Step 4: Checkwhethermaximumgeneration count is
+ reached. Ifmaximumgenerationcount isreachedprint the
+ Paretofront.Else,repeatstep2tostep4.
+ Step5:Selectionofthebestcompromisesolutionfromthe
+ set ofnon-dominatedsolution ismadebyusing the fuzzy
+ decisionmaking[24] [26].
+ V. RESULTS
+ A. TESTSYSTEMSANDINPUTPARAMETERS
+ Thepresentworksolved thecharging infrastructureplan
+ningproblemfor thecityofGuwahati, India.Fig.5shows
+ VOLUME7,2019 100277
+S.Debetal.:ChargingStationPlacementforElectricVehicles:ACaseStudyofGuwahatiCity, India
+ FIGURE5. HighwaynetworkofGuwahati.
+ FIGURE6. SuperimposedroadanddistributionnetworkofGuwahati.
+ thehighwaynetworkofGuwahaticonnectingJalukbariwith
+ Narangi.Fig.6shows thesuperimposedroadanddistribu
+tionnetworkfor theGuwahati city.Thebusand linedata
+ of thedistributionnetworkareavailable inRef [27] [30]
+ andtheoutagedataof thedistributionnetworkweretaken
+ fromthe logbookof the substations. The roadnetwork
+ datawererecordedfromGooglemaps.Therecordedtraf c
+ datafromGoogleAPIwasusedforcomputingcongestion
+ probabilityoftheroadnetworknodes.Thedistancebetween
+ thedifferentnodesoftheroadnetworkthatwasrequiredfor
+ computingtheAccessibilityindex(thirdobjectivefunction
+ of theoptimizationproblem)was also recorded fromthe
+ Googlemaps. 24hour traf cdatawas recorded for both
+ weekdaysandweekends.Thecharacteristicsofthenodesof
+ theroadnetworkarereportedinTable1.Table2presents
+ the different input parameters required for optimization.
+ Table3presentsthealgorithm-speci ccontrolparametersof
+ CSOTLBO.
+ B. CANDIDATELOCATIONS
+ At the rst stage, thecandidate locations forplacementof
+ the charging stationswere screened by themethodology
+ reported in section II (A). TheVSFof the buses of the
+ distributionnetworkare reported inTable4.TheVSFof
+ bus19washighest indicatingthat itwastheweakestpoint
+ of thepower distributionnetwork. Thecongestionproba
+TABLE1. Typesofnodesoftheroadnetwork.
+ TABLE2. Inputparameters.
+ TABLE3. AlgorithmspecificparametersofCSOTLBO.
+ bilitiesofdifferent typesof thenodesof theroadnetwork
+ computedbyBayesiannetworkarereportedinTable5.The
+ nodes sprawlingmarket areas areheavilycongestedwith
+ congestionprobabilityof0.643.Table6reportstheprobabil
+ityofbeingacandidatelocationforplacementofcharging
+ stations for all thebusesof thedistributionnetwork.The
+ busesforwhichtheprobabilityofbeingcandidatelocation
+ washighwereselectedasthecandidatelocationsforcharg
+ingstationplacementasreportedinTable7.AssumingEV
+ drivingrangeof150km[31]andEVscompleting10round
+ tripsfromJalukbari toNarangi, thechargingdemandnodes
+ werecomputedas reported inTable7. It shouldbenoted
+ that thisworkdoesnot consider stochasticdrivingcycles
+ reportedin[32].
+ C.OPTIMALALLOCATIONOFCHARGINGSTATIONS
+ At thesecondstage, theoptimal locationsfor thecharging
+ stationsplacementwereselectedfromthesetofcandidate
+ locationsbysolving theoptimizationproblemreported in
+ sectionII(B).Theoptimizationproblemwassolvedbyusing
+ CSOTLBOalgorithm.Inthiscase,theoptimizationyielded
+ 100278 VOLUME7,2019
+S.Debetal.:ChargingStationPlacementforEVs:ACaseStudyofGuwahatiCity, India
+ FIGURE7. Impactofchargingstationplacementonvoltageprofileofdistributionnetwork.
+ TABLE4. VSFofthebusesofdistributionnetwork.
+ TABLE5. Congestionprobabilityofroadnetwork.
+ TABLE6. Probabilityofbeingcandidatelocation.
+ sixnon-dominatedsolutionorplanningschemesasshown
+ inTable8.Table9reports thevaluesof thefourobjective
+ functionsfor thesixplans.FromTable9, it isclear thatall
+ thesixplanswereuniqueanditwastrickytoselectthebest
+ plan.
+ TABLE7. Candidatelocationsandchargingdemandnodes.
+ TABLE8. Optimalallocationofchargingstations.
+ TABLE9. Objectivefunctionvaluesfortheplanningschemes.
+ D. EFFECTOFCHARGINGSTATIONPLACEMENT
+ ONDISTRIBUTIONNETWORK
+ Thechargingstationsaffect theoperatingparametersofthe
+ distributionnetworksuchasvoltagedeviation,reliability,and
+ power loss.However, thevoltagepro lesof all thebuses
+ (Fig. 7)werewithinacceptable limit for all the sixplans
+ reported inTable8. Fig. 8, Fig. 9andFig. 10 showthe
+ impactofchargingstationplacementonthe threereliabil
+ity indicesnamedSAIFI,SAIDI, andCAIDI respectively.
+ VOLUME7,2019 100279
+S. Deb et al.: Charging Station Placement for Electric Vehicles: A Case Study of Guwahati City, India
+ FIGURE 8. Impact of charging station placement on SAIFI.
+ FIGURE 9. Impact of charging station placement on SAIDI.
+ FIGURE 10. Impact of charging station placement on CAIDI.
+ The reliability indices degraded due to increased charging
+ load. However, the degraded values were less than the crit
+ical values of these reliability indices reported in [33], [34].
+ The power losses of the distribution network after position
+ing the charging stations was also within acceptable limit
+ as shown in Fig. 11. Thus, the two-stage planning model
+ of charging station placement was capable of allocating
+ charging stations with least harm to the distribution network
+ of Guwahati.
+ E. DECIDING BETWEEN PARETO OPTIMAL SOLUTIONS
+ The nal step was the selection among the plans. Selection
+ of the best plan among the six plans was a tricky task due to
+ involvement of opposing objectives. In real world, some cri
+teria cannot be measured by crisp values due to indistinctness
+ arising from humanqualitative judgment [26]. Hence, afuzzy
+ evaluation system was used for the nal decision mak
+ing [26]. Cost, VRP index, accessibility index, and waiting
+ time were chosen as the four aspects of decision making in
+ the charging station placement problem. In the fuzzy decision
+ 100280
+ FIGURE 11. Impact of charging station placement on power loss.
+ FIGURE 12. Radar charts of all the planning schemes.
+ FIGURE 13. The charging station locations obtained according to plan 6.
+ making, low cost, VRP index, and waiting time received a
+ higher evaluation. And, high accessibility received a higher
+ evaluation. Table 10 lists the scale of the three objective
+ functions based on the aforementioned criteria. The scores of
+ each plan obtained by fuzzy evaluation system are reported
+ in Table 11. Fig. 12 shows the radar charts for all the six
+ planning schemes. The area occupied by plan 6 is highest
+ indicating that it is the most bene cial plan. The area occu
+pied by plan 2 and plan 3 is least indicating that they are
+ the least convenient plan. Fig.13 shows the optimal locations
+ of charging stations obtained by the best planning scheme
+ (plan 6) and the charging demand points. In Fig. 13, the red
+ VOLUME 7, 2019
+S.Debetal.:ChargingStationPlacementforEVs:ACaseStudyofGuwahatiCity, India
+ TABLE10. Scaleoffuzzyevaluation.
+ TABLE11. Scoreoftheplanningschemes.
+ trianglesdenote thechargingstationsandtheblackcircles
+ denotethechargingdemandpoints.
+ VI. CONCLUSION
+ Sustainabledevelopmentofcharginginfrastructureismustto
+ promoteEVs.Thisworksolvedthechargingstationplace
+ment problemin thecontext ofGuwahati city, anupcom
+ingsmartcity.Thechargingstationplacementproblemwas
+ modeled inamulti-objective frameworkconsideringcost,
+ operatingparametersofdistributionnetworksuchasvoltage
+ stability,reliability,powerloss,factorsaffectingEVdrivers
+ conveniencelikeaccessibilitytothechargingstations,wait
+ingtimeinthechargingstations.AnovelCSOTLBOalgo
+rithmwasharnessedtosolvetheoptimizationproblem.Fuzzy
+ decisionmakingwas utilized to choose between various
+ Pareto-optimal solutions.The results showed that thepro
+posedapproach is capableof allocating the charging sta
+tionswith least harmto the operatingparameters of the
+ powerdistributionnetworkandsimultaneouslyconsidering
+ EVdrivers convenience.Moreover, theauthorswill tryto
+ reachtheconcernedauthoritiesandimplement theplanning
+ modelontheentireGuwahati cityaswell asother Indian
+ cities infuture.Our futureworkwillalsoaddresssomeof
+ thecritical issuesrelatedtocharginginfrastructureplanning
+ likepricingstrategies inthechargingstations, planningof
+ VehicletoGrid(V2G)enabledchargingstationsandplanning
+ ofchargingstationspoweredbyrenewableresources.
+ ACKNOWLEDGMENT
+ TheauthorswouldliketothanktheHenryFordFoundation,
+ Finland,andBusinessFinlandforfunding.Theyalsothank
+ AssamStateElectricityBoardforsharingtheoutageandbus
+ data.
+ REFERENCES
+ [1] S.Deb,K.Tammi,K.Kalita,andP.Mahanta, Reviewofrecenttrendsin
+ charginginfrastructureplanningforelectricvehicles, WileyInterdiscipl.
+ Rev.,EnergyEnviron.,vol.7,no.6,p.e306,2018.
+ [2] S.Deb,K.Kalita,andP.Mahanta, Reviewofimpactofelectricvehicle
+ chargingstationonthepowergrid, inProc.Int.Conf.Technol.Advance
+mentsPowerEnergy(TAPEnergy),Dec.2017,pp.16.
+ [3] S.Deb,K.Tammi,K.Kalita,andP.Mahanta, Impactofelectricvehicle
+ chargingstationloadondistributionnetwork, Energies,vol.11,no.1,
+ p.178,2018.
+ [4] Z.-F. Liu,W. Zhang, X. Ji, andK. Li, Optimal planningof charg
+ingstation for electricvehiclebasedonparticle swarmoptimization,
+ inProc. IEEEPESInnov.SmartGridTechnol. (ISGTAsia),May2012,
+ pp.15.
+ [5] Z.Bendiabdellah,S.M.Senouci,andM.Feham, Ahybridalgorithmfor
+ planningpublicchargingstations, inProc.GlobalInf.Infrastruct.Netw.
+ Symp.(GIIS),Sep.2014,pp.13.
+ [6] W.Tu,Q.Li,Z.Fang,S.-L.Shaw,B.Zhou, andX.Chang, Optimiz
+ing the locationsof electric taxi chargingstations:Aspatial temporal
+ demandcoverageapproach, Transp.Res.C,Emerg.Technol., vol. 65,
+ pp.172189,Apr.2016.
+ [7] Z.Liu,F.Wen, andG.Ledwich, Optimalplanningofelectric-vehicle
+ chargingstationsindistributionsystems, IEEETrans.PowerDel.,vol.28,
+ no.1,pp.102110,Jan.2013.
+ [8] Y.Zheng,Z.Y.Dong,Y.Xu,K.Meng,J.H.Zhao,andJ.Qiu, Electric
+ vehiclebatterycharging/swapstationsindistributionsystems:Comparison
+ studyandoptimal planning, IEEETrans.PowerSyst., vol. 29, no. 1,
+ pp.221229,Jan.2014.
+ [9] H.Simorgh,H.Doagou-Mojarrad,H.Razmi, andG.B.Gharehpetian,
+ Cost-basedoptimalsitingandsizingofelectricvehiclechargingstations
+ consideringdemandresponseprogrammes, IETGener.,Transmiss.Dis
+trib.,vol.12,no.8,pp.17121720,2017.
+ [10] G.Wang,Z.Xu,F.Wen,andK.P.Wong, Traf c-constrainedmultiob
+jectiveplanningofelectric-vehiclechargingstations, IEEETrans.Power
+ Del.,vol.28,no.4,pp.23632372,Oct.2013.
+ VOLUME7,2019 100281
+S. Deb et al.: Charging Station Placement for Electric Vehicles: A Case Study of Guwahati City, India
+ [11] A. Rajabi-Ghahnavieh and P. Sadeghi-Barzani, Optimal zonal fast
+charging station placement considering urban traf c circulation, IEEE
+ Trans. Veh. Technol., vol. 66, no. 1, pp. 4556, Jan. 2017.
+ [12] S. Deb, K. Kalita, X.-Z. Gao, K. Tammi, and P. Mahanta, Optimal
+ placement of charging stations using CSO-TLBO algorithm, in Proc. 3rd
+ Int. Conf. Res. Comput. Intell. Commun. Netw. (ICRCICN), Nov. 2017,
+ pp. 8489.
+ [13] F. V. Jensen, An Introduction to Bayesian Networks, vol. 210. London,
+ U.K.: UCL Press, 1996, pp. 1178.
+ [14] P. R. Q. e Assis Santana and B. C. Williams, A bucket elimination
+ approach for determining strong controllability of temporal plans with
+ uncontrollable choices, in Proc. 26th AAAI Conf. Artif. Intell., Jul. 2012,
+ pp. 12.
+ [15] S. Deb, D. Ghosh, and D. K. Mohanta, Reliability analysis of PV
+ cell, wind turbine and diesel generator by using Bayesian network, in
+ Proc. Int. Conf. Elect., Electron., Optim. Techn. (ICEEOT), Mar. 2016,
+ pp. 27142719.
+ [16] D. Ghosh, S. Deb, and D. K. Mohanta, Reliability evaluation and
+ enhancement of microgrid incorporating the effect of distributed gen
+eration, in Handbook of Distributed Generation. Cham, Switzerland:
+ Springer, 2017, pp. 685 730.
+ [17] S. Deb, D. Ghosh, and D. K. Mohanta, Adequacy analysis of stand alone
+ hybrid microgrid by using Bayesian network, in Proc. Int. Conf. Comput.
+ Power, Energy Inf. Commun. (ICCPEIC), Mar. 2016, pp. 331336.
+ [18] M. M. Rahman, S. Barua, S. T. Zohora, K. Hasan, and T. Aziz, Voltage
+ sensitivity based site selection for PHEV charging station in commercial
+ distribution system, in Proc. IEEE PES AsiaPaci c Power Energy Eng.
+ Conf. (APPEEC), Dec. 2013, pp. 16.
+ [19] J. A. M. Rupa and S. Ganesh, Power ow analysis for radial distribution
+ system using backward/forward sweep method, Int. J. Elect., Comput.,
+ Electron. Commun. Eng., vol. 8, no. 10, pp. 15401544, 2014.
+ [20] Y. Xiang, J. Liu, R. Li, F. Li, C. Gu, and S. Tang, Economic
+ planning of electric vehicle charging stations considering traf c con
+straints and load pro le templates, Appl. Energy, vol. 178, pp. 647659,
+ Sep. 2016.
+ [21] O. Hafez and K. Bhattacharya, Queuing analysis based PEV load model
+ing considering battery charging behavior and their impact on distribution
+ system operation, IEEE Trans. Smart Grid, vol. 9, no. 1, pp. 261273,
+ Jan. 2018.
+ [22] M.Mohammadi,F.Jolai,andH.Rostami, AnM/M/cqueuemodelforhub
+ covering location problem, Math. Comput. Model., vol. 54, nos. 1112,
+ pp. 26232638, 2011.
+ [23] S. Deb, K. Tammi, X. Z. Gao, K. Kalita, and P. Mahanta, A Pareto
+ dominance based multi-objective chicken swarm optimization and teach
+ing learning based optimization algorithm for charging station placement
+ problem, Neural Comput. Appl., to be published.
+ [24] S. Guo and H. Zhao, Optimal site selection of electric vehicle charging
+ station by using fuzzy TOPSIS based on sustainability perspective, Appl.
+ Energy, vol. 158, no. 15, pp. 390402, Nov. 2015.
+ [25] M.-R.Andervazh,S.Javadi,andM.H.Aliabadi, Decisionsupportsystem
+ for multicriteria recon guration of power distribution systems using CSO
+ and ef cient graph traversal and repository management techniques, Int.
+ Trans. Elect. Energy Syst., vol. 28, p. e2579, Aug. 2018. doi: 10.1002/
+ etep.2579.

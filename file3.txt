@@ -1,0 +1,35 @@
+
+
+1.	Open Source Map Data for Bangalore collected and saved into 2 csvs: 1 for edges and 1 for nodes.
+2.	Traffic Data for Bangalore Collected from Kaggle, longitudes and latitudes are collected for these roads so that it will be easier to collaborate with edges  : ['100 Feet Road', 'Anil Kumble Circle', 'Ballari Road', 'CMH Road', 'Hebbal Flyover', 'Hosur Road', 'ITPL Main Road', 'Jayanagar 4th Block', 'Marathahalli Bridge', 'Sarjapur Road', 'Silk Board Junction', 'Sony World Junction', 'South End Circle', 'Trinity Circle', 'Tumkur Road', 'Yeshwanthpur Circle'] => known_roads
+geopy’s geolocator is used to match the coordinates and names between the known_roads and edges.csv
+3.	The categorical columns are processed in the following ways:
+a.	Empty cells are filled with ‘None’
+b.	The ‘lanes’ field with list type values are replaced with sum of the list
+c.	The ‘maxspeed’ field with list type values are replaced with average of list, those in mph is converted to kph.
+d.	The following columns of edges are dropped/replaced in the following ways:
+i.	Geometry, key, u, v : Geometry is replaced with start_latitude, start_longitude, end_latitude, end_longitude which represent the start and end coordinates of the edges based on the start and end nodes of the edges (u,v). The corresponding coordinates for u,v are found from the nodes data.
+ii.	Osmid: No use as this just works as identifier and has no effect on data
+iii.	Width: Not enough data (only about 0.1%)
+iv.	Est_width: Not enough data
+v.	Area: No data
+e.	One-hot encoding (creating columns for each unique value of a column) is performed for the following columns:
+i.	Service
+ii.	Access
+iii.	Tunnel
+f.	The following columns are converted to int based on whether they had a value or they were empty:
+i.	Bridge: (empty=1, string_value=0)
+ii.	Junction: (empty=1, string_value=0)
+iii.	Ref: (empty=0, string_value=1)
+iv.	Name: (empty=0, string_value=1)
+g.	Label Encoder used on the following columns:
+i.	Highway: Too many unique values(97) [one-hot encoding cannot be used]
+ii.	Reversed: Boolean to int
+h.	The dataframe is saved as Bangalore_edges_modified
+4.	Calculation of Volume for Roads :
+a.	For Roads With Exact Matches : Volumes are simply copied from traffic to modified_edges
+b.	Fuzzy Logic is used to Find match scores for roads that are not exactly the same but similar:
+i.	If score is greater than 90, exact volume is used
+ii.	If score is between 65 and 90, (score/100) * volume is used
+c.	The above two steps gives around (0.1%) of Traffic Volumes. These volumes are used in a RandomForestRegressor to allot values to other roads
+d.	The final dataframe is saved as Bangalore_traffic_filled
