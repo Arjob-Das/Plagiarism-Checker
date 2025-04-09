@@ -45,10 +45,13 @@ def calculate_similarity(text1, text2):
 
 
 def main():
+    source = []
+    plag = []
     input_folder = "inputs"
     filenames = []
     scores = []
-    inp = "file3.txt"
+    scores2 = []
+    inp = "file2.txt"
     maxscore = 0
     maxfile = ""
     if not os.path.isfile(inp):
@@ -67,14 +70,17 @@ def main():
         file_path = os.path.join(input_folder, file)
         if os.path.isfile(file_path):
             src_text = extract_text_from_pdf(file_path)
+            source.append(src_text)
+            plag.append(input_text)
 
             similarity_score = calculate_similarity(src_text, input_text)
 
+            scores2.append(similarity_score)
             if similarity_score == 1:
                 print("Exact Match!")
                 sys.exit(0)
 
-            if similarity_score > 0.4:
+            if similarity_score > 0.5:
                 filenames.append(file)
                 scores.append(f"{similarity_score*100:0.2f}%")
                 plagiarized = True
@@ -93,6 +99,14 @@ def main():
     if not plagiarized:
         print(
             f"No plagiarism detected for '{inp}' against files in '{input_folder}'.")
+    df = pd.DataFrame({
+        'source_text': source,
+        'plagiarism_txt': plag,
+        'label': [1 if x >= 0.6 else 0 for x in scores2]
+    })
+
+    df.to_csv(f"{inp.split(".")[0]}_plag.csv")
+    print(df.head())
 
 
 if __name__ == '__main__':
