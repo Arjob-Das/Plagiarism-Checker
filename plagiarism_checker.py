@@ -99,14 +99,17 @@ def main():
     if not plagiarized:
         print(
             f"No plagiarism detected for '{inp}' against files in '{input_folder}'.")
+    labels = [1 if x >= 0.4 else 0 for x in scores2]
+    print(labels)
     df = pd.DataFrame({
-        'source_text': source,
+        'source_txt': source,
         'plagiarism_txt': plag,
-        'label': [1 if x >= 0.6 else 0 for x in scores2]
+        'label': labels
     })
 
     df.to_csv(f"{inp.split(".")[0]}_plag.csv")
     print(df.head())
+    print(f"DataSet saved to {inp.split(".")[0]}_plag.csv")
 
 
 if __name__ == '__main__':
