@@ -1,7 +1,9 @@
-fitz
+PyMuPDF
 scikit-learn
 nltk
 pandas
 tqdm
 tensorflow
 ipywidgets
+matplotlib
+seaborn

@@ -1,89 +1,109 @@
 # Plagiarism Detection System
 
-This project implements a plagiarism detection system that checks the similarity between a reference text and multiple documents using Natural Language Processing (NLP) techniques and machine learning models. The system extracts text from PDF files, preprocesses it, calculates cosine similarity, and uses a machine learning model (LSTM) to predict the presence of plagiarism.
+This project implements a plagiarism detection system that checks semantic and textual similarity between a query text and a database of documents. It integrates traditional NLP techniques (TF-IDF + Cosine Similarity) and advanced Deep Learning models (Siamese Bidirectional LSTM) to offer a highly robust similarity assessment.
 
 ## Features
 
-- **Text Extraction from PDF:** Extracts raw text from PDF files using `PyMuPDF`.
-- **Preprocessing:** Tokenizes, removes stopwords, applies stemming, and cleans text for better feature extraction.
-- **Plagiarism Detection:** Uses TF-IDF and cosine similarity to calculate the similarity score between documents.
-- **Machine Learning Model:** An LSTM-based deep learning model is trained on labeled data to classify whether the text contains plagiarism.
-- **Quantization:** After training, the model is quantized to optimize performance.
-- **Real-time Prediction:** Provides real-time plagiarism predictions via a simple user interface built with `ipywidgets`.
+- **Text Extraction from PDF:** Extracts raw text from PDF files using `PyMuPDF` (`fitz`).
+- **Text Preprocessing:** Tokenizes, filters stopwords, and applies Porter stemming for TF-IDF calculations.
+- **Side-by-Side Plagiarism Check (CLI):** Compares a query text file against all documents in a directory and outputs similarity scores for both TF-IDF and Siamese BiLSTM models.
+- **Siamese BiLSTM Deep Learning Model:** A neural network built with Keras that processes document pairs through shared Embedding and Bidirectional LSTM layers, computing similarity via absolute difference and product merge vectors.
+- **Dataset Preparation & Scaling:** Utilities to preprocess, clean, and balance massive textual corpora (like the SNLI dataset) into training, validation, and testing splits.
+- **Automated Performance Benchmarking:** Generates performance reports (Accuracy, Precision, Recall, F1-Score, and Confusion Matrices) comparing models.
+- **Real-Time Prediction Widget:** An interactive Jupyter notebook widget powered by `ipywidgets` to check custom texts against a PDF database dynamically.
 
-## Installation
+---
 
-To run the project, ensure you have the necessary dependencies. You can install them via pip:
+## Installation & Setup
 
+1. **Clone the Repository** and navigate to the project directory.
+
+2. **Initialize a Python Virtual Environment:**
+   ```bash
+   py -m venv .venv
+   ```
+
+3. **Activate the Virtual Environment:**
+   - **Windows (PowerShell):**
+     ```powershell
+     .\.venv\Scripts\Activate.ps1
+     ```
+   - **Windows (CMD):**
+     ```cmd
+     .\.venv\Scripts\activate.bat
+     ```
+   - **macOS / Linux:**
+     ```bash
+     source .venv/bin/activate
+     ```
+
+4. **Install Dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+## Usage Workflow
+
+### Step 1: Prepare the Splits
+Split the larger corpus (`data.csv`) into balanced train, validation, and test datasets:
 ```bash
-pip install -r requirements.txt
+python prep_data.py
 ```
-## Required Libraries:
-fitz (PyMuPDF) for text extraction from PDFs.
+This generates `train.csv`, `val.csv`, and `test.csv`.
 
-sklearn for machine learning tools (TF-IDF, cosine similarity, etc.).
-
-nltk for text preprocessing (tokenization, stemming, stopwords).
-
-tensorflow for building and training the deep learning model.
-
-ipywidgets for creating interactive widgets for real-time prediction.
-
-## Usage
-### Step 1: Prepare the Dataset
-Place your PDF files in the inputs folder. Create a text file file2.txt containing the reference text to compare against other documents.
-
-### Step 2: Run Plagiarism Check
-To check plagiarism in your documents, simply run the main script:
-
+### Step 2: Train the Siamese Model
+Train the Siamese BiLSTM model on the balanced splits:
 ```bash
-
-python plagiarism_check.py
+python train_siamese.py
 ```
-The script will:
+This will train the model, save it as `model_pdf.keras`/`model_pdf.h5`, serialize the tokenizer to `tokenizer.pkl`, and generate quantized model weights (`quantized_model_pdf.keras`/`quantized_model_pdf.h5`).
 
-Extract and preprocess text from the PDFs.
+### Step 3: Run the Benchmark Report
+Evaluate and compare the performance of the baseline TF-IDF cosine check and the Siamese BiLSTM model on the test set:
+```bash
+python eval_report.py
+```
+This prints the comparison table and saves a detailed report to `evaluation_report.md`.
 
-Calculate cosine similarity between the input text and each document.
+### Step 4: Run Plagiarism Check CLI
+Check a document against a folder of reference PDFs:
+```bash
+python plagiarism_checker.py --input file2.txt --inputs-dir inputs
+```
+- `--input`: Path to the query text file (defaults to `file2.txt`).
+- `--inputs-dir`: Folder containing PDF reference files (defaults to `inputs`).
 
-Display results showing files with high similarity scores and potential plagiarism.
+This outputs a side-by-side comparison table of similarity percentages for all files in the directory.
 
-Save the results to a CSV file.
+---
 
-### Step 3: Train the Model (Optional)
-You can train the model on a custom dataset by providing labeled data in a CSV format with columns: source_txt, plagiarism_txt, and label.
+## Project Structure
 
-Run the python_tensor_cpu.ipynb to preprocess data and train the LSTM model:
+- **`plagiarism_checker.py`**: Main CLI utility for checking documents side-by-side.
+- **`siamese_model.py`**: Model architecture definition for the Siamese BiLSTM network.
+- **`train_siamese.py`**: Pipeline script to train and quantize the deep learning model.
+- **`prep_data.py`**: Dataset balancing and train/val/test splitting tool.
+- **`eval_report.py`**: Performance evaluation and statistical reporter.
+- **`predict_widget.py`**: Script powering the interactive prediction widget.
+- **`plagiarism.ipynb`**: Original data exploration notebook.
+- **`plagarism_tensor_cpu.ipynb`**: Interactive notebook containing the original model training and widget.
+- **`requirements.txt`**: List of Python package dependencies.
+- **`.gitignore`**: Git path exclusion rules.
+- **`.antigravityignore`**: AntiGravity optimization rules.
 
+---
 
-This will train the model and save it as model_pdf.h5, along with the tokenizer as tokenizer.pkl.
+## Model Benchmark Results
 
-### Step 4: Make Real-time Predictions
-You can use the interactive widget for real-time plagiarism detection by using python_tensor_cpu.ipynb 
+On an unseen test set partition of 2,500 sentence pairs, the metrics compare as follows:
 
-This will launch an interactive text box where you can input new text and get an immediate plagiarism prediction.
+| Metric | TF-IDF Cosine Baseline | Siamese BiLSTM Model | Delta |
+| :--- | :---: | :---: | :---: |
+| **Accuracy** | 60.08% | **75.48%** | **+15.40%** |
+| **Precision** | 70.93% | **75.75%** | **+4.82%** |
+| **Recall** | 34.16% | **74.96%** | **+40.80%** |
+| **F1-Score** | 46.11% | **75.35%** | **+29.24%** |
 
-## Files
-plagiarism_check.py: Main script for plagiarism detection.
-
-python_tensor_cpu.ipynb: Script to train the LSTM model. Interactive script for real-time plagiarism prediction.
-
-requirements.txt: List of Python dependencies required to run the project.
-
-model_pdf.h5: Pretrained LSTM model.
-
-tokenizer.pkl: Tokenizer for text preprocessing.
-
-## Model Details
-The model is built using TensorFlow and Keras. It consists of two LSTM layers followed by a dense layer for binary classification.
-
-It uses binary cross-entropy loss and the Adam optimizer.
-
-The model is quantized after training to optimize for performance.
-
-## Acknowledgments
-The plagiarism detection approach is based on NLP techniques using TF-IDF and cosine similarity.
-
-The LSTM model was trained using the tensorflow.keras library.
-
-The interactive real-time prediction interface is powered by ipywidgets.
+The Siamese model's deep semantic understanding provides a **+40.80% increase in Recall**, which is crucial for identifying paraphrased plagiarism.

@@ -1,0 +1,21 @@
+# Execution Checklist: Plagiarism Checker Enhancement (v1)
+
+- `[x]` **Phase 1: Environment Setup**
+  - `[x]` Create Python virtual environment `.venv`
+  - `[x]` Update `requirements.txt`
+  - `[x]` Install dependencies into `.venv`
+- `[x]` **Phase 2: Data Preprocessing & Validation Setup**
+  - `[x]` Create `prep_data.py` (text cleaning, split logic)
+  - `[x]` Create baseline statistic collection in `eval_report.py`
+  - `[x]` Run `prep_data.py` to split and balance the dataset
+- `[x]` **Phase 3: Model Architecture & Training**
+  - `[x]` Create Siamese BiLSTM model in `siamese_model.py`
+  - `[x]` Create training script `train_siamese.py`
+  - `[x]` Train the model on the expanded dataset
+  - `[x]` Quantize the trained model
+- `[x]` **Phase 4: Inference & GUI Updates**
+  - `[x]` Update `plagiarism_checker.py` to use both TF-IDF and deep learning Siamese models
+  - `[x]` Create `predict_widget.py` for correct paired inference
+- `[x]` **Phase 5: Evaluation & Verification**
+  - `[x]` Run evaluation script `eval_report.py` to compare TF-IDF vs Siamese BiLSTM statistics
+  - `[x]` Verify with manual checks and log results in `walkthrough.md`
